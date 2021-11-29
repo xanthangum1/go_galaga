@@ -36,7 +36,13 @@ func main() {
 	defer renderer.Destroy()
 
 	for {
-		renderer.SetDrawColor(255, 255, 255, 255)
+		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
+			switch event.(type) {
+			case *sdl.QuitEvent:
+				return
+			}
+		}
+		renderer.SetDrawColor(255, 0, 0, 255)
 		renderer.Clear()
 
 		renderer.Present()
