@@ -1,6 +1,8 @@
 package main
 
 import (
+	"math"
+
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -40,6 +42,11 @@ func (bul *bullet) draw(renderer *sdl.Renderer) {
 		&sdl.Rect{X: 0, Y: 0, W: bulletSize, H: bulletSize},
 		&sdl.Rect{X: int32(x), Y: int32(y), W: bulletSize, H: bulletSize},
 	)
+}
+
+func (bul *bullet) update() {
+	bul.x += bulletSpeed * math.Cos(bul.angle)
+	bul.y += bulletSpeed * math.Sin(bul.angle)
 }
 
 var bulletPool []*bullet

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math"
 	"time"
 
 	"github.com/veandco/go-sdl2/sdl"
@@ -72,6 +73,7 @@ func (p *player) update() {
 				bul.active = true
 				bul.x = p.x
 				bul.y = p.y
+				bul.angle = 270 * (math.Pi / 180)
 
 				p.lastShot = time.Now()
 			}
