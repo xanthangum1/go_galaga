@@ -41,21 +41,17 @@ func main() {
 	// prevent memory leak after we are done
 	defer renderer.Destroy()
 
-	// load player spaceship for use
-	img, err := sdl.LoadBMP("sprites/player.bmp")
+	plr, err := newPlayer(renderer)
 	if err != nil {
-		fmt.Println("loading player sprite:", err)
+		fmt.Println("creating player:", err)
 		return
 	}
-	// prevent memory leak
-	defer img.Free()
-	// use previously loaded spaceship to create texture
-	playerTexture, err := renderer.CreateTextureFromSurface(img)
+
+	enemy, err := newBasicEnemy(renderer, screenWidth/2.0, screenHeight/2.0)
 	if err != nil {
-		fmt.Println("creating player texture:", err)
+		fmt.Println("Initializing enemy:", err)
+		return
 	}
-	// prevent memory leak
-	defer playerTexture.Destroy()
 
 	for {
 		// for loop to catch user exiting with alt + f4
@@ -69,12 +65,13 @@ func main() {
 		renderer.SetDrawColor(255, 255, 255, 255)
 		renderer.Clear()
 
-		// Create player spaceship in game
-		renderer.Copy(
-			playerTexture,
-			&sdl.Rect{X: 0, Y: 0, W: 105, H: 105},
-			&sdl.Rect{X: 40, Y: 20, W: 105, H: 105},
-		)
+		// render player spaceship
+		plr.draw(renderer)
+
+		// update player position
+		plr.update()
+
+		enemy.draw(renderer)
 
 		// shows everything on renderer
 		renderer.Present()
