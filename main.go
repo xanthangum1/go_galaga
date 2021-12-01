@@ -60,11 +60,7 @@ func main() {
 	defer renderer.Destroy()
 
 	// render new player
-	plr, err := newPlayer(renderer)
-	if err != nil {
-		fmt.Println("creating player:", err)
-		return
-	}
+	plr := newPlayer(renderer)
 
 	var enemies []basicEnemy
 
@@ -74,15 +70,14 @@ func main() {
 			x := (float64(i)/5)*screenWidth + (basicEnemySize / 2.0)
 			y := float64(j)*basicEnemySize + (basicEnemySize / 2.0)
 
-			enemy, err := newBasicEnemy(renderer, x, y)
-			if err != nil {
-				fmt.Println("creating basic enemy:", err)
-				return
-			}
+			enemy := newBasicEnemy(renderer, x, y)
 
 			enemies = append(enemies, enemy)
 		}
 	}
+
+	//initialize bullet pool
+	initBulletPool(renderer)
 
 	for {
 		// for loop to catch user exiting with alt + f4
@@ -107,6 +102,9 @@ func main() {
 			enemy.draw(renderer)
 		}
 
+		for _, bul := range bulletPool {
+			bul.draw(renderer)
+		}
 		// shows everything on renderer
 		renderer.Present()
 	}

@@ -57,4 +57,13 @@ func (p *player) update() {
 		// move player down
 		p.y += playerSpeed
 	}
+
+	// listen for shooting bullets
+	if keys[sdl.SCANCODE_SPACE] == 1 {
+		if bul, ok := bulletFromPool(); ok {
+			bul.active = true
+			bul.x = p.x
+			bul.y = p.y
+		}
+	}
 }
