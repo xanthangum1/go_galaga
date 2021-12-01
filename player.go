@@ -1,18 +1,25 @@
 package main
 
 import (
+	"time"
+
 	"github.com/veandco/go-sdl2/sdl"
 )
 
 const (
 	playerSpeed = 4
 	playerSize  = 105
+
+	playerShotCooldown = time.Millisecond * 250
 )
 
 // Creating a player spaceship class
 type player struct {
 	tex  *sdl.Texture
 	x, y float64
+
+	// used for shot cooldown
+	lastShot time.Time
 }
 
 func newPlayer(renderer *sdl.Renderer) (p player) {
@@ -34,8 +41,8 @@ func (p *player) draw(renderer *sdl.Renderer) {
 	// Create player spaceship in game
 	renderer.Copy(
 		p.tex,
-		&sdl.Rect{X: 0, Y: 0, W: 105, H: 105},
-		&sdl.Rect{X: int32(x), Y: int32(y), W: 105, H: 105},
+		&sdl.Rect{X: 0, Y: 0, W: playerSize, H: playerSize},
+		&sdl.Rect{X: int32(x), Y: int32(y), W: playerSize, H: playerSize},
 	)
 }
 
@@ -60,10 +67,14 @@ func (p *player) update() {
 
 	// listen for shooting bullets
 	if keys[sdl.SCANCODE_SPACE] == 1 {
-		if bul, ok := bulletFromPool(); ok {
-			bul.active = true
-			bul.x = p.x
-			bul.y = p.y
+		if time.Since(p.lastShot) >= playerShotCooldown {
+			if bul, ok := bulletFromPool(); ok {
+				bul.active = true
+				bul.x = p.x
+				bul.y = p.y
+
+				p.lastShot = time.Now()
+			}
 		}
 	}
 }

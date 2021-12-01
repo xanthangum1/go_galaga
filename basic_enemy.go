@@ -30,8 +30,8 @@ func (be *basicEnemy) draw(renderer *sdl.Renderer) {
 	// Create enemy spaceship in game
 	renderer.CopyEx(
 		be.tex,
-		&sdl.Rect{X: 0, Y: 0, W: 105, H: 105},
-		&sdl.Rect{X: int32(x), Y: int32(y), W: 105, H: 105},
+		&sdl.Rect{X: 0, Y: 0, W: basicEnemySize, H: basicEnemySize},
+		&sdl.Rect{X: int32(x), Y: int32(y), W: basicEnemySize, H: basicEnemySize},
 		180,
 		&sdl.Point{X: basicEnemySize / 2, Y: basicEnemySize / 2},
 		sdl.FLIP_NONE,
