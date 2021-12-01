@@ -41,16 +41,29 @@ func main() {
 	// prevent memory leak after we are done
 	defer renderer.Destroy()
 
+	// render new player
 	plr, err := newPlayer(renderer)
 	if err != nil {
 		fmt.Println("creating player:", err)
 		return
 	}
 
-	enemy, err := newBasicEnemy(renderer, screenWidth/2.0, screenHeight/2.0)
-	if err != nil {
-		fmt.Println("Initializing enemy:", err)
-		return
+	var enemies []basicEnemy
+
+	// render enemy troupe
+	for i := 0; i < 5; i++ {
+		for j := 0; j < 3; j++ {
+			x := (float64(i)/5)*screenWidth + (basicEnemySize / 2.0)
+			y := float64(j)*basicEnemySize + (basicEnemySize / 2.0)
+
+			enemy, err := newBasicEnemy(renderer, x, y)
+			if err != nil {
+				fmt.Println("creating basic enemy:", err)
+				return
+			}
+
+			enemies = append(enemies, enemy)
+		}
 	}
 
 	for {
@@ -71,7 +84,10 @@ func main() {
 		// update player position
 		plr.update()
 
-		enemy.draw(renderer)
+		// render all enemies
+		for _, enemy := range enemies {
+			enemy.draw(renderer)
+		}
 
 		// shows everything on renderer
 		renderer.Present()
