@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -17,27 +15,15 @@ type player struct {
 	x, y float64
 }
 
-func newPlayer(renderer *sdl.Renderer) (p player, err error) {
-	// load player spaceship for use
-	img, err := sdl.LoadBMP("sprites/player.bmp")
-	if err != nil {
-		//return empyty player if error to bubble error up the call stack
-		return player{}, fmt.Errorf("loading player sprite: %v", err)
-	}
-	// prevent memory leak
-	defer img.Free()
-	// use previously loaded spaceship to create texture
-	p.tex, err = renderer.CreateTextureFromSurface(img)
-	if err != nil {
-		//return empyty player if error to bubble error up the call stack
-		return player{}, fmt.Errorf("creating player texture: %v", err)
-	}
+func newPlayer(renderer *sdl.Renderer) (p player) {
+	// create player texture
+	p.tex = textureFromBMP(renderer, "sprites/player.bmp")
 
 	// set default position of player
 	p.x = screenWidth / 2.0
 	p.y = screenHeight - playerSize*2.5
 
-	return p, nil
+	return p
 }
 
 func (p *player) draw(renderer *sdl.Renderer) {

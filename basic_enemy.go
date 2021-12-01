@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -13,26 +11,15 @@ type basicEnemy struct {
 	x, y float64
 }
 
-func newBasicEnemy(renderer *sdl.Renderer, x float64, y float64) (be basicEnemy, err error) {
-	// load player spaceship for use
-	img, err := sdl.LoadBMP("sprites/basic_enemy.bmp")
-	if err != nil {
-		//return empyty player if error to bubble error up the call stack
-		return basicEnemy{}, fmt.Errorf("loading enemy sprite: %v", err)
-	}
-	// prevent memory leak
-	defer img.Free()
-	// use previously loaded spaceship to create texture
-	be.tex, err = renderer.CreateTextureFromSurface(img)
-	if err != nil {
-		//return empyty player if error to bubble error up the call stack
-		return basicEnemy{}, fmt.Errorf("creating enemy texture: %v", err)
-	}
+func newBasicEnemy(renderer *sdl.Renderer, x float64, y float64) (be basicEnemy) {
+	// create enemy texture
+	be.tex = textureFromBMP(renderer, "sprites/basic_enemy.bmp")
 
+	// set default location coordinates
 	be.x = x
 	be.y = y
 
-	return be, nil
+	return be
 }
 
 func (be *basicEnemy) draw(renderer *sdl.Renderer) {

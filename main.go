@@ -7,9 +7,27 @@ import (
 )
 
 const (
-	screenWidth  = 800
-	screenHeight = 1200
+	screenWidth  = 600
+	screenHeight = 900
 )
+
+func textureFromBMP(renderer *sdl.Renderer, filename string) *sdl.Texture {
+	// load object from bmp file
+	img, err := sdl.LoadBMP(filename)
+	if err != nil {
+		//panic out if error
+		panic(fmt.Errorf("loading %v: %v", filename, err))
+	}
+	// prevent memory leak
+	defer img.Free()
+	// use previously loaded spaceship to create texture
+	tex, err := renderer.CreateTextureFromSurface(img)
+	if err != nil {
+		//return empyty player if error to bubble error up the call stack
+		panic(fmt.Errorf("creating texture %v: %v", filename, err))
+	}
+	return tex
+}
 
 func main() {
 	// initializing all tools in sdl --standard
