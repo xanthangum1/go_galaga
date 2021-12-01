@@ -7,7 +7,7 @@ import (
 )
 
 const bulletSize = 32
-const bulletSpeed = 0.2
+const bulletSpeed = 20
 
 type bullet struct {
 	tex  *sdl.Texture
@@ -47,6 +47,10 @@ func (bul *bullet) draw(renderer *sdl.Renderer) {
 func (bul *bullet) update() {
 	bul.x += bulletSpeed * math.Cos(bul.angle)
 	bul.y += bulletSpeed * math.Sin(bul.angle)
+
+	if bul.x > screenWidth || bul.x < 0 || bul.y > screenHeight || bul.y < 0 {
+		bul.active = false
+	}
 }
 
 var bulletPool []*bullet

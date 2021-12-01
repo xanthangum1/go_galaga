@@ -53,11 +53,17 @@ func (p *player) update() {
 	keys := sdl.GetKeyboardState()
 
 	if keys[sdl.SCANCODE_LEFT] == 1 {
-		// Move player left
-		p.x -= playerSpeed
+		// User cant move off screen left
+		if p.x-(playerSize/2.0) > 0 {
+			// Move player left
+			p.x -= playerSpeed
+		}
 	} else if keys[sdl.SCANCODE_RIGHT] == 1 {
-		// move player right
-		p.x += playerSpeed
+		// User cant move off screen right
+		if p.x+(playerSize/2.0) < screenWidth {
+			// move player right
+			p.x += playerSpeed
+		}
 	}
 
 	if keys[sdl.SCANCODE_UP] == 1 {
@@ -71,8 +77,8 @@ func (p *player) update() {
 	// listen for shooting bullets
 	if keys[sdl.SCANCODE_SPACE] == 1 {
 		if time.Since(p.lastShot) >= playerShotCooldown {
-			p.shoot(p.x+25, p.y-20)
-			p.shoot(p.x+25, p.y-20)
+			p.shoot(p.x+10000, p.y-10000)
+			p.shoot(p.x+10000, p.y-10000)
 
 			p.lastShot = time.Now()
 		}
@@ -82,8 +88,8 @@ func (p *player) update() {
 func (p *player) shoot(x, y float64) {
 	if bul, ok := bulletFromPool(); ok {
 		bul.active = true
-		bul.x = p.x
-		bul.y = p.y
+		bul.x = x
+		bul.y = y
 		bul.angle = 270 * (math.Pi / 180)
 	}
 }
