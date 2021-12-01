@@ -77,8 +77,8 @@ func (p *player) update() {
 	// listen for shooting bullets
 	if keys[sdl.SCANCODE_SPACE] == 1 {
 		if time.Since(p.lastShot) >= playerShotCooldown {
-			p.shoot(p.x+10000, p.y-10000)
-			p.shoot(p.x+10000, p.y-10000)
+			p.shoot(p.x+25, p.y-20)
+			p.shoot(p.x-25, p.y-20)
 
 			p.lastShot = time.Now()
 		}
