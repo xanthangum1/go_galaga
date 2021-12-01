@@ -8,8 +8,10 @@ import (
 )
 
 const (
-	playerSpeed = 4
-	playerSize  = 105
+	playerSpeed              = 4
+	playerSize               = 105
+	playerTurretDistanceSide = 25
+	playerTurretDistanceUp   = 20
 
 	playerShotCooldown = time.Millisecond * 250
 )
@@ -69,14 +71,19 @@ func (p *player) update() {
 	// listen for shooting bullets
 	if keys[sdl.SCANCODE_SPACE] == 1 {
 		if time.Since(p.lastShot) >= playerShotCooldown {
-			if bul, ok := bulletFromPool(); ok {
-				bul.active = true
-				bul.x = p.x
-				bul.y = p.y
-				bul.angle = 270 * (math.Pi / 180)
+			p.shoot(p.x+25, p.y-20)
+			p.shoot(p.x+25, p.y-20)
 
-				p.lastShot = time.Now()
-			}
+			p.lastShot = time.Now()
 		}
+	}
+}
+
+func (p *player) shoot(x, y float64) {
+	if bul, ok := bulletFromPool(); ok {
+		bul.active = true
+		bul.x = p.x
+		bul.y = p.y
+		bul.angle = 270 * (math.Pi / 180)
 	}
 }
