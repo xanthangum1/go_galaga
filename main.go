@@ -33,7 +33,7 @@ func main() {
 
 	// create rendering object for our units
 	renderer, err := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
-	// catch error for rendere
+	// catch error for renderer
 	if err != nil {
 		fmt.Println("initializing renderer:", err)
 		return
