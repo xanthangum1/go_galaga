@@ -26,6 +26,7 @@ type element struct {
 	components []component
 }
 
+// add a new component to element
 func (elem *element) addComponent(new component) {
 	// at compile, loop through every existing component and make sure it's not of the same type as the new component
 	for _, existing := range elem.components {
@@ -38,14 +39,13 @@ func (elem *element) addComponent(new component) {
 	elem.components = append(elem.components, new)
 }
 
+// easy access component type check for element
 func (elem *element) getComponent(withType component) component {
-	typ := reflect.TypeOf(component)
-	for _, comp := range elem.components{
+	typ := reflect.TypeOf(withType)
+	for _, comp := range elem.components {
 		if reflect.TypeOf(comp) == typ {
 			return comp
 		}
-	} 
+	}
 	panic(fmt.Sprintf("no component with type %v", reflect.TypeOf(withType)))
 }
-
-myElement.getComponent(&myComponent{})

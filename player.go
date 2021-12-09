@@ -16,13 +16,27 @@ const (
 	playerShotCooldown = time.Millisecond * 250
 )
 
-// Creating a player spaceship class
-type player struct {
-	tex  *sdl.Texture
-	x, y float64
+//  // Creating a player spaceship class
+//  // Before refactor because we don't want to define type base on a kind
+// type player struct {
+// 	tex  *sdl.Texture
+// 	x, y float64
 
-	// used for shot cooldown
-	lastShot time.Time
+// 	// used for shot cooldown
+// 	lastShot time.Time
+// }
+
+// create a new element attach all necessary components
+func newPlayer(renderer *sdl.Renderer) (player *element) {
+	player = &element{}
+
+	player.position = vector{
+		x: screenWidth / 2.0,
+		y: screenHeight - playerSize/2.0,
+	}
+
+	player.active = true
+
 }
 
 func newPlayer(renderer *sdl.Renderer) (p player) {
