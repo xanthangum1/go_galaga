@@ -37,6 +37,10 @@ func newPlayer(renderer *sdl.Renderer) (player *element) {
 
 	player.active = true
 
+	sr := newSpriteRenderer(player, renderer, "sprites/player.bmp")
+	player.addComponent(sr)
+
+	return player
 }
 
 func newPlayer(renderer *sdl.Renderer) (p player) {

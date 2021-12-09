@@ -12,7 +12,7 @@ type spriteRenderer struct {
 }
 
 func newSpriteRenderer(container *element, renderer *sdl.Renderer, filename string) *spriteRenderer {
-	return spriteRenderer{
+	return &spriteRenderer{
 		container: container,
 		tex:       textureFromBMP(renderer, filename),
 	}
@@ -26,6 +26,21 @@ func (sr *spriteRenderer) onDraw(renderer *sdl.Renderer) error {
 	// convert coordinates to top left of sprite element
 	x := sr.container.position.x - float64(width/2.0)
 	y := sr.container.position.y - float64(height/2.0)
+
+	// render
+	renderer.CopyEx(
+		sr.tex,
+		&sdl.Rect{X: 0, Y: 0, W: width, H: height},
+		&sdl.Rect{X: int32(x), Y: int32(y), W: width, H: height},
+		sr.container.rotation,
+		&sdl.Point{X: width / 2, Y: height / 2},
+		sdl.FLIP_NONE,
+	)
+	return nil
+}
+
+func (sr *spriteRenderer) onUpdate() error {
+	return nil
 }
 
 func textureFromBMP(renderer *sdl.Renderer, filename string) *sdl.Texture {
