@@ -50,7 +50,6 @@ func main() {
 			y := float64(j)*basicEnemySize + (basicEnemySize / 2.0)
 
 			enemy := newBasicEnemy(renderer, vector{x, y})
-
 			elements = append(elements, enemy)
 		}
 	}
@@ -79,7 +78,7 @@ func main() {
 				}
 				err = elem.draw(renderer)
 				if err != nil {
-					fmt.Println("updating element:", elem)
+					fmt.Println("drawing element:", elem)
 					return
 				}
 			}
