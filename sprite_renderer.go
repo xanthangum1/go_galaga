@@ -18,7 +18,7 @@ func newSpriteRenderer(container *element, renderer *sdl.Renderer, filename stri
 
 	_, _, width, height, err := tex.Query()
 	if err != nil {
-		panic(fmt.Errorf("Querying texture: %v", err))
+		panic(fmt.Errorf("querying texture: %v", err))
 	}
 
 	return &spriteRenderer{
@@ -31,8 +31,8 @@ func newSpriteRenderer(container *element, renderer *sdl.Renderer, filename stri
 
 func (sr *spriteRenderer) onDraw(renderer *sdl.Renderer) error {
 	// convert coordinates to top left of sprite element
-	x := sr.container.position.x - float64(sr.width/2.0)
-	y := sr.container.position.y - float64(sr.height/2.0)
+	x := sr.container.position.x - sr.width/2.0
+	y := sr.container.position.y - sr.height/2.0
 
 	// render
 	renderer.CopyEx(
@@ -41,8 +41,8 @@ func (sr *spriteRenderer) onDraw(renderer *sdl.Renderer) error {
 		&sdl.Rect{X: int32(x), Y: int32(y), W: int32(sr.width), H: int32(sr.height)},
 		sr.container.rotation,
 		&sdl.Point{X: int32(sr.width) / 2, Y: int32(sr.height) / 2},
-		sdl.FLIP_NONE,
-	)
+		sdl.FLIP_NONE)
+
 	return nil
 }
 
@@ -59,11 +59,11 @@ func textureFromBMP(renderer *sdl.Renderer, filename string) *sdl.Texture {
 	}
 	// prevent memory leak
 	defer img.Free()
-	// use previously loaded spaceship to create texture
+	// use previously loaded bmp to create texture
 	tex, err := renderer.CreateTextureFromSurface(img)
 	if err != nil {
 		//return empyty player if error to bubble error up the call stack
-		panic(fmt.Errorf("creating texture %v: %v", filename, err))
+		panic(fmt.Errorf("creating texture from %v: %v", filename, err))
 	}
 	return tex
 }
