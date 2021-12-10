@@ -73,6 +73,11 @@ func (mover *keyboardShooter) onUpdate() error {
 			mover.lastShot = time.Now()
 		}
 	}
+	return nil
+}
+
+func (mover *keyboardShooter) onDraw(renderer *sdl.Renderer) error {
+	return nil
 }
 
 func (mover *keyboardShooter) shoot(x, y float64) {
