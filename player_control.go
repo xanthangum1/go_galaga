@@ -28,13 +28,13 @@ func (mover *keyboardMover) onUpdate() error {
 
 	if keys[sdl.SCANCODE_LEFT] == 1 {
 		// User cant move off screen left
-		if cont.position.x-(mover.sr.width/2.0) > 0 {
+		if cont.position.x-(float64(mover.sr.width)/2.0) > 0 {
 			// Move player left
 			cont.position.x -= mover.speed
 		}
 	} else if keys[sdl.SCANCODE_RIGHT] == 1 {
 		// User cant move off screen right
-		if cont.position.x+(mover.sr.height/2.0) < screenWidth {
+		if cont.position.x+(float64(mover.sr.height/2.0)) < screenWidth {
 			// move player right
 			cont.position.x += mover.speed
 		}

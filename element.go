@@ -38,7 +38,7 @@ func (elem *element) draw(renderer *sdl.Renderer) error {
 	return nil
 }
 
-// updates componenet inside element.component
+// updates component inside element.component
 func (elem *element) update() error {
 	for _, comp := range elem.components {
 		err := comp.onUpdate()
@@ -55,7 +55,7 @@ func (elem *element) addComponent(new component) {
 	// at compile, loop through every existing component and make sure it's not of the same type as the new component
 	for _, existing := range elem.components {
 		if reflect.TypeOf(new) == reflect.TypeOf(existing) {
-			panic(fmt.Sprintf("attempt to add new component with existing trype %v",
+			panic(fmt.Sprintf("attempt to add new component with existing type %v",
 				reflect.TypeOf(new)))
 		}
 	}
@@ -73,3 +73,5 @@ func (elem *element) getComponent(withType component) component {
 	}
 	panic(fmt.Sprintf("no component with type %v", reflect.TypeOf(withType)))
 }
+
+var elements []*element

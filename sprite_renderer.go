@@ -9,14 +9,14 @@ import (
 type spriteRenderer struct {
 	container *element
 	tex       *sdl.Texture
-	width     int
-	height    int
+	width     float64
+	height    float64
 }
 
 func newSpriteRenderer(container *element, renderer *sdl.Renderer, filename string) *spriteRenderer {
 	tex := textureFromBMP(renderer, filename)
 
-	_, _, width, height, err := sr.tex.Query()
+	_, _, width, height, err := tex.Query()
 	if err != nil {
 		panic(fmt.Errorf("Querying texture: %v", err))
 	}
