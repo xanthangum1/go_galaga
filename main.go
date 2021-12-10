@@ -92,10 +92,18 @@ func main() {
 		renderer.Clear()
 
 		// render player spaceship
-		plr.draw(renderer)
+		err := plr.onDraw(renderer)
+		if err != nil {
+			fmt.Println("drawing player:", err)
+			return
+		}
 
 		// update player position
-		plr.update()
+		err := plr.onUpdate()
+		if err != nil {
+			fmt.Println("updating player:", err)
+			return
+		}
 
 		// render all enemies
 		for _, enemy := range enemies {

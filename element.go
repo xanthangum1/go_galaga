@@ -26,6 +26,30 @@ type element struct {
 	components []component
 }
 
+// draws component inside element.component
+func (elem *element) draw(renderer *sdl.Renderer) error {
+	for _, comp := range elem.components {
+		err := comp.onDraw(renderer)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// updates componenet inside element.component
+func (elem *element) update() error {
+	for _, comp := range elem.components {
+		err := comp.onUpdate()
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 // add a new component to element
 func (elem *element) addComponent(new component) {
 	// at compile, loop through every existing component and make sure it's not of the same type as the new component
