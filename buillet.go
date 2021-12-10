@@ -15,6 +15,8 @@ func newBullet(renderer *sdl.Renderer) *element {
 	mover := newBulletMover(bullet, bulletSpeed)
 	bullet.addComponent(mover)
 
+	bullet.active = false
+
 	return bullet
 }
 
@@ -24,6 +26,7 @@ func initBulletPool(renderer *sdl.Renderer) {
 	//fill up bulletPool with bullets
 	for i := 0; i < 30; i++ {
 		bul := newBullet(renderer)
+		elements = append(elements, bul)
 		bulletPool = append(bulletPool, bul)
 	}
 }

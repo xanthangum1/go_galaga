@@ -83,8 +83,8 @@ func (mover *keyboardShooter) onDraw(renderer *sdl.Renderer) error {
 func (mover *keyboardShooter) shoot(x, y float64) {
 	if bul, ok := bulletFromPool(); ok {
 		bul.active = true
-		bul.x = x
-		bul.y = y
-		bul.angle = 270 * (math.Pi / 180)
+		bul.position.x = x
+		bul.position.y = y
+		bul.rotation = 270 * (math.Pi / 180)
 	}
 }

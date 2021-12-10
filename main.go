@@ -19,7 +19,7 @@ func main() {
 	}
 	// create a window to play our game
 	window, err := sdl.CreateWindow(
-		"Gaming in Go",
+		"golaga!",
 		sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 		screenWidth, screenHeight,
 		sdl.WINDOW_OPENGL)
@@ -33,7 +33,6 @@ func main() {
 
 	// create rendering object for our units
 	renderer, err := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
-	// catch error for renderer
 	if err != nil {
 		fmt.Println("initializing renderer:", err)
 		return
@@ -83,19 +82,6 @@ func main() {
 					fmt.Println("updating element:", elem)
 					return
 				}
-			}
-		}
-
-		for _, bul := range bulletPool {
-			bul.draw(renderer)
-			if err != nil {
-				fmt.Println("drawing bullet:", err)
-				return
-			}
-			bul.update()
-			if err != nil {
-				fmt.Println("updating bullet:", err)
-				return
 			}
 		}
 		// shows everything on renderer
