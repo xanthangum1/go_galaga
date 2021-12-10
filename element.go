@@ -74,4 +74,4 @@ func (elem *element) getComponent(withType component) component {
 	panic(fmt.Sprintf("no component with type %v", reflect.TypeOf(withType)))
 }
 
-var elements []*element
+// var elements []*element

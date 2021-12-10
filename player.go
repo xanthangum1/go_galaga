@@ -33,7 +33,7 @@ func newPlayer(renderer *sdl.Renderer) (player *element) {
 	player.addComponent(mover)
 
 	shooter := newKeyboardMover(player, float64(playerShotCooldown))
-	player.addComponent((shooter))
+	player.addComponent(shooter)
 
 	return player
 }

@@ -42,9 +42,7 @@ func main() {
 	defer renderer.Destroy()
 
 	// render new player
-	plr := newPlayer(renderer)
-
-	var enemies []basicEnemy
+	elements = append(elements, newPlayer(renderer))
 
 	// render enemy troupe
 	for i := 0; i < 5; i++ {

@@ -6,34 +6,21 @@ import (
 
 const basicEnemySize = 105
 
-type basicEnemy struct {
-	tex  *sdl.Texture
-	x, y float64
-}
+// creates a basic enemy
+func newBasicEnemy(renderer *sdl.Renderer, position vector) *element {
+	basicEnemy := &element{}
 
-func newBasicEnemy(renderer *sdl.Renderer, x float64, y float64) (be basicEnemy) {
-	// create enemy texture
-	be.tex = textureFromBMP(renderer, "sprites/basic_enemy.bmp")
+	// establishes position
+	basicEnemy.position = position
+	// establishes roation
+	basicEnemy.rotation = 180
 
-	// set default location coordinates
-	be.x = x
-	be.y = y
+	// render from bmp file
+	sr := newSpriteRenderer(basicEnemy, renderer, "sprites/basic_enemy.bmp")
+	// Add basic enemy components to element
+	basicEnemy.addComponent(sr)
 
-	return be
-}
+	basicEnemy.active = true
 
-func (be *basicEnemy) draw(renderer *sdl.Renderer) {
-	// convert enemy coordinates to top left of sprite
-	x := be.x - basicEnemySize/2.0
-	y := be.y - basicEnemySize/2.0
-
-	// Create enemy spaceship in game
-	renderer.CopyEx(
-		be.tex,
-		&sdl.Rect{X: 0, Y: 0, W: basicEnemySize, H: basicEnemySize},
-		&sdl.Rect{X: int32(x), Y: int32(y), W: basicEnemySize, H: basicEnemySize},
-		180,
-		&sdl.Point{X: basicEnemySize / 2, Y: basicEnemySize / 2},
-		sdl.FLIP_NONE,
-	)
+	return basicEnemy
 }
