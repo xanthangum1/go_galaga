@@ -10,8 +10,9 @@ const bulletSpeed = 20
 func newBullet(renderer *sdl.Renderer) *element {
 	bullet := &element{}
 
-	sr := newSpriteRenderer(bullet, renderer, "sprites/bullet.bmp")
+	sr := newSpriteRenderer(bullet, renderer, "sprites/player_bullet.bmp")
 	bullet.addComponent(sr)
+
 	mover := newBulletMover(bullet, bulletSpeed)
 	bullet.addComponent(mover)
 
@@ -23,7 +24,6 @@ func newBullet(renderer *sdl.Renderer) *element {
 var bulletPool []*element
 
 func initBulletPool(renderer *sdl.Renderer) {
-	//fill up bulletPool with bullets
 	for i := 0; i < 30; i++ {
 		bul := newBullet(renderer)
 		elements = append(elements, bul)
@@ -32,11 +32,11 @@ func initBulletPool(renderer *sdl.Renderer) {
 }
 
 func bulletFromPool() (*element, bool) {
-	// comb through bulletPool to find bullet not in use
 	for _, bul := range bulletPool {
 		if !bul.active {
 			return bul, true
 		}
 	}
+
 	return nil, false
 }
