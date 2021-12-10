@@ -1,6 +1,11 @@
 package main
 
-import "github.com/veandco/go-sdl2/sdl"
+import (
+	"math"
+	"time"
+
+	"github.com/veandco/go-sdl2/sdl"
+)
 
 type keyboardMover struct {
 	container *element
@@ -23,16 +28,58 @@ func (mover *keyboardMover) onUpdate() error {
 
 	if keys[sdl.SCANCODE_LEFT] == 1 {
 		// User cant move off screen left
-		if cont.position.x-(playerSize/2.0) > 0 {
+		if cont.position.x-(mover.sr.width/2.0) > 0 {
 			// Move player left
-			cont.position.x -= playerSpeed
+			cont.position.x -= mover.speed
 		}
 	} else if keys[sdl.SCANCODE_RIGHT] == 1 {
 		// User cant move off screen right
-		if cont.position.x+(playerSize/2.0) < screenWidth {
+		if cont.position.x+(mover.sr.height/2.0) < screenWidth {
 			// move player right
-			cont.position.x += playerSpeed
+			cont.position.x += mover.speed
 		}
 	}
 	return nil
+}
+
+func (mover *keyboardMover) onDraw(rednerer *sdl.Renderer) error {
+	return nil
+}
+
+type keyboardShooter struct {
+	container *element
+	cooldown  time.Duration
+	lastShot  time.Time
+}
+
+func newKeyboardShooter(container *element, cooldown time.Duration) *keyboardShooter {
+	return &keyboardShooter{
+		container: container,
+		cooldown:  cooldown,
+	}
+}
+
+func (mover *keyboardShooter) onUpdate() error {
+	keys := sdl.GetKeyboardState()
+
+	pos := mover.container.position
+
+	// listen for shooting bullets
+	if keys[sdl.SCANCODE_SPACE] == 1 {
+		if time.Since(mover.lastShot) >= mover.cooldown {
+			mover.shoot(pos.x+25, pos.y-20)
+			mover.shoot(pos.x-25, pos.y-20)
+
+			mover.lastShot = time.Now()
+		}
+	}
+}
+
+func (mover *keyboardShooter) shoot(x, y float64) {
+	if bul, ok := bulletFromPool(); ok {
+		bul.active = true
+		bul.x = x
+		bul.y = y
+		bul.angle = 270 * (math.Pi / 180)
+	}
 }
