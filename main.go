@@ -50,9 +50,9 @@ func main() {
 			x := (float64(i)/5)*screenWidth + (basicEnemySize / 2.0)
 			y := float64(j)*basicEnemySize + (basicEnemySize / 2.0)
 
-			enemy := newBasicEnemy(renderer, x, y)
+			enemy := newBasicEnemy(renderer, vector{x, y})
 
-			enemies = append(enemies, enemy)
+			elements = append(elements, enemy)
 		}
 	}
 
@@ -71,28 +71,32 @@ func main() {
 		renderer.SetDrawColor(255, 255, 255, 255)
 		renderer.Clear()
 
-		// render player spaceship
-		err = plr.draw(renderer)
-		if err != nil {
-			fmt.Println("drawing player:", err)
-			return
-		}
-
-		// update player position
-		err = plr.update()
-		if err != nil {
-			fmt.Println("updating player:", err)
-			return
-		}
-
-		// render all enemies
-		for _, enemy := range enemies {
-			enemy.draw(renderer)
+		for _, elem := range elements {
+			if elem.active {
+				err = elem.update()
+				if err != nil {
+					fmt.Println("updating element:", err)
+					return
+				}
+				err = elem.draw(renderer)
+				if err != nil {
+					fmt.Println("updating element:", elem)
+					return
+				}
+			}
 		}
 
 		for _, bul := range bulletPool {
 			bul.draw(renderer)
+			if err != nil {
+				fmt.Println("drawing bullet:", err)
+				return
+			}
 			bul.update()
+			if err != nil {
+				fmt.Println("updating bullet:", err)
+				return
+			}
 		}
 		// shows everything on renderer
 		renderer.Present()
