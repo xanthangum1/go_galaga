@@ -16,6 +16,7 @@ type vector struct {
 type component interface {
 	onUpdate() error
 	onDraw(renderer *sdl.Renderer) error
+	onCollision(other *element) error
 }
 
 // takes shared information that every element in game will need
@@ -48,6 +49,16 @@ func (elem *element) update() error {
 		}
 	}
 
+	return nil
+}
+
+func (elem *element) collision(other *element) error {
+	for _, comp := range elem.components {
+		err := comp.onCollision(other)
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

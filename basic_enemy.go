@@ -20,6 +20,12 @@ func newBasicEnemy(renderer *sdl.Renderer, position vector) *element {
 	// Add basic enemy components to element
 	basicEnemy.addComponent(sr)
 
+	col := circle{
+		center: basicEnemy.position,
+		radius: 38,
+	}
+	basicEnemy.collisions = append(basicEnemy.collisions, col)
+
 	basicEnemy.active = true
 
 	return basicEnemy
