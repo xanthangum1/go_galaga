@@ -30,6 +30,8 @@ func (mover *bulletMover) onUpdate() error {
 	if cont.position.x > screenWidth || cont.position.x < 0 || cont.position.y > screenHeight || cont.position.y < 0 {
 		cont.active = false
 	}
+
+	cont.collisions[0].center = cont.position
 	return nil
 }
 

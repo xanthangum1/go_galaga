@@ -20,6 +20,9 @@ func newBasicEnemy(renderer *sdl.Renderer, position vector) *element {
 	// Add basic enemy components to element
 	basicEnemy.addComponent(sr)
 
+	vtb := newVulnerableToBullets(basicEnemy)
+	basicEnemy.addComponent(vtb)
+
 	col := circle{
 		center: basicEnemy.position,
 		radius: 38,
