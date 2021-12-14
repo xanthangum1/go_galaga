@@ -42,6 +42,11 @@ func (mover *keyboardMover) onUpdate() error {
 	return nil
 }
 
+// apply collisions
+func (mover *keyboardMover) onCollision(other *element) error {
+	return nil
+}
+
 func (mover *keyboardMover) onDraw(rednerer *sdl.Renderer) error {
 	return nil
 }
@@ -87,4 +92,9 @@ func (mover *keyboardShooter) shoot(x, y float64) {
 		bul.position.y = y
 		bul.rotation = 270 * (math.Pi / 180)
 	}
+}
+
+// apply collisions
+func (mover *keyboardShooter) onCollision(other *element) error {
+	return nil
 }

@@ -83,6 +83,12 @@ func main() {
 				}
 			}
 		}
+
+		// check collisions every frame
+		if err := checkCollisions(); err != nil {
+			fmt.Println("checking collisions:", err)
+			return
+		}
 		// shows everything on renderer
 		renderer.Present()
 	}

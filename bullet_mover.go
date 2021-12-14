@@ -32,3 +32,8 @@ func (mover *bulletMover) onUpdate() error {
 	}
 	return nil
 }
+
+// apply collisions
+func (mover *bulletMover) onCollision(other *element) error {
+	return nil
+}
