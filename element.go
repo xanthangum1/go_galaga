@@ -24,6 +24,7 @@ type element struct {
 	rotation   float64
 	active     bool
 	components []component
+	collisions []circle
 }
 
 // draws component inside element.component
