@@ -22,6 +22,8 @@ func newBullet(renderer *sdl.Renderer) *element {
 	}
 	bullet.collisions = append(bullet.collisions, col)
 
+	bullet.tag = "bullet"
+
 	return bullet
 }
 

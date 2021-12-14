@@ -24,6 +24,7 @@ type element struct {
 	position   vector
 	rotation   float64
 	active     bool
+	tag        string
 	components []component
 	collisions []circle
 }
