@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	playerSpeed = 4
+	playerSpeed = 5
 	playerSize  = 105
 	// playerTurretDistanceSide = 25
 	// playerTurretDistanceUp   = 20

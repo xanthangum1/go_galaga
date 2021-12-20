@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -9,7 +10,12 @@ import (
 const (
 	screenWidth  = 600
 	screenHeight = 900
+
+	targetTicksPerSecond = 60
 )
+
+// created for hardware variables. Will keep player input speed constand using this
+var delta float64
 
 func main() {
 	// initializing all tools in sdl --standard
@@ -57,7 +63,10 @@ func main() {
 	//initialize bullet pool
 	initBulletPool(renderer)
 
+	// main loop for all processing
 	for {
+		// will record when time starts for delta calculation
+		frameStartTime := time.Now()
 		// for loop to catch user exiting with alt + f4
 		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 			switch event.(type) {
@@ -91,5 +100,7 @@ func main() {
 		}
 		// shows everything on renderer
 		renderer.Present()
+
+		delta = time.Since(frameStartTime).Seconds() * targetTicksPerSecond
 	}
 }

@@ -30,13 +30,13 @@ func (mover *keyboardMover) onUpdate() error {
 		// User cant move off screen left
 		if cont.position.x-(float64(mover.sr.width)/2.0) > 0 {
 			// Move player left
-			cont.position.x -= mover.speed
+			cont.position.x -= mover.speed * delta
 		}
 	} else if keys[sdl.SCANCODE_RIGHT] == 1 {
 		// User cant move off screen right
 		if cont.position.x+(float64(mover.sr.height/2.0)) < screenWidth {
 			// move player right
-			cont.position.x += mover.speed
+			cont.position.x += mover.speed * delta
 		}
 	}
 	return nil
@@ -69,7 +69,7 @@ func (mover *keyboardShooter) onUpdate() error {
 
 	pos := mover.container.position
 
-	// listen for shooting bullets
+	// listen for shots
 	if keys[sdl.SCANCODE_SPACE] == 1 {
 		if time.Since(mover.lastShot) >= mover.cooldown {
 			mover.shoot(pos.x+25, pos.y-20)
