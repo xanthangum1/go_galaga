@@ -29,25 +29,12 @@ func newSpriteRenderer(container *element, renderer *sdl.Renderer, filename stri
 	}
 }
 
-func (sr *spriteRenderer) onDraw(renderer *sdl.Renderer) error {
-	// convert coordinates to top left of sprite element
-	x := sr.container.position.x - sr.width/2.0
-	y := sr.container.position.y - sr.height/2.0
-
-	// render
-	renderer.CopyEx(
-		sr.tex,
-		&sdl.Rect{X: 0, Y: 0, W: int32(sr.width), H: int32(sr.height)},
-		&sdl.Rect{X: int32(x), Y: int32(y), W: int32(sr.width), H: int32(sr.height)},
-		sr.container.rotation,
-		&sdl.Point{X: int32(sr.width) / 2, Y: int32(sr.height) / 2},
-		sdl.FLIP_NONE)
-
+func (sr *spriteRenderer) onUpdate() error {
 	return nil
 }
 
-func (sr *spriteRenderer) onUpdate() error {
-	return nil
+func (sr *spriteRenderer) onDraw(renderer *sdl.Renderer) error {
+	return drawTexture(sr.tex, sr.container.position, sr.container.rotation, renderer)
 }
 
 func textureFromBMP(renderer *sdl.Renderer, filename string) *sdl.Texture {
