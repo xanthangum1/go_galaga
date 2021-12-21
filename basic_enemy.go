@@ -9,11 +9,11 @@ import (
 const basicEnemySize = 105
 
 // creates a basic enemy
-func newBasicEnemy(renderer *sdl.Renderer, position vector) *element {
+func newBasicEnemy(renderer *sdl.Renderer, x, y float64) *element {
 	basicEnemy := &element{}
 
 	// establishes position
-	basicEnemy.position = position
+	basicEnemy.position = vector{x: x, y: y}
 	// establishes roation
 	basicEnemy.rotation = 180
 
@@ -32,12 +32,8 @@ func newBasicEnemy(renderer *sdl.Renderer, position vector) *element {
 
 	animator := newAnimator(basicEnemy, sequences, "idle")
 	basicEnemy.addComponent(animator)
-
 	// render from bmp file
-	sr := newSpriteRenderer(basicEnemy, renderer, "sprites/basic_enemy.bmp")
 	// Add basic enemy components to element
-	basicEnemy.addComponent(sr)
-
 	vtb := newVulnerableToBullets(basicEnemy)
 	basicEnemy.addComponent(vtb)
 

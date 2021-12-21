@@ -55,8 +55,7 @@ func main() {
 			x := (float64(i)/5)*screenWidth + (basicEnemySize / 2.0)
 			y := float64(j)*basicEnemySize + (basicEnemySize / 2.0)
 
-			enemy := newBasicEnemy(renderer, vector{x, y})
-			elements = append(elements, enemy)
+			elements = append(elements, newBasicEnemy(elements, renderer, x, y))
 		}
 	}
 
