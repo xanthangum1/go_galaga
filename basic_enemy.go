@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -14,6 +16,23 @@ func newBasicEnemy(renderer *sdl.Renderer, position vector) *element {
 	basicEnemy.position = position
 	// establishes roation
 	basicEnemy.rotation = 180
+
+	idleSequence, err := newSequence("sprites/basic_enemy/idle", 10, true, renderer)
+	if err != nil {
+		panic(fmt.Errorf("creating idle sequence: %v %v", error))
+	}
+	destroySequence, err := newSequence("sprites/basic_enemy/destroy", 10, false, renderer)
+	if err != nil {
+		panic(fmt.Errorf("creating destroy sequence: %v %v", error))
+	}
+
+	sequences := map[string]*sequence{
+		"idle":    idleSequence,
+		"destroy": destroySequence,
+	}
+
+	animator := newAnimator(basicEnemy)
+	basicEnemy.addComponent(animator)
 
 	// render from bmp file
 	sr := newSpriteRenderer(basicEnemy, renderer, "sprites/basic_enemy.bmp")

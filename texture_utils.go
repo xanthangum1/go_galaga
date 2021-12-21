@@ -29,3 +29,21 @@ func drawTexture(
 		&sdl.Point{X: int32(width) / 2, Y: int32(height) / 2},
 		sdl.FLIP_NONE)
 }
+
+func loadTextureFromBMP(filename string, renderer *sdl.Renderer) (*sdl.Texture, error) {
+	// load object from bmp file
+	img, err := sdl.LoadBMP(filename)
+	if err != nil {
+		//panic out if error
+		return nil, fmt.Errorf("loading %v: %v", filename, err)
+	}
+	// prevent memory leak
+	defer img.Free()
+	// use previously loaded bmp to create texture
+	tex, err := renderer.CreateTextureFromSurface(img)
+	if err != nil {
+		//return empyty player if error to bubble error up the call stack
+		return nil, fmt.Errorf("creating texture from %v: %v", filename, err)
+	}
+	return tex, nil
+}

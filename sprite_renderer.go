@@ -14,16 +14,22 @@ type spriteRenderer struct {
 }
 
 func newSpriteRenderer(container *element, renderer *sdl.Renderer, filename string) *spriteRenderer {
-	tex := textureFromBMP(renderer, filename)
+	sr := spriteRenderer{}
+	var err error
 
-	_, _, width, height, err := tex.Query()
+	sr.tex, err = loadTextureFromBMP(filename, renderer)
+	if err != nil {
+		panic(err)
+	}
+
+	_, _, width, height, err := sr.tex.Query()
 	if err != nil {
 		panic(fmt.Errorf("querying texture: %v", err))
 	}
 
 	return &spriteRenderer{
 		container: container,
-		tex:       textureFromBMP(renderer, filename),
+		tex:       sr.tex,
 		width:     float64(width),
 		height:    float64(height),
 	}
@@ -35,24 +41,6 @@ func (sr *spriteRenderer) onUpdate() error {
 
 func (sr *spriteRenderer) onDraw(renderer *sdl.Renderer) error {
 	return drawTexture(sr.tex, sr.container.position, sr.container.rotation, renderer)
-}
-
-func textureFromBMP(renderer *sdl.Renderer, filename string) *sdl.Texture {
-	// load object from bmp file
-	img, err := sdl.LoadBMP(filename)
-	if err != nil {
-		//panic out if error
-		panic(fmt.Errorf("loading %v: %v", filename, err))
-	}
-	// prevent memory leak
-	defer img.Free()
-	// use previously loaded bmp to create texture
-	tex, err := renderer.CreateTextureFromSurface(img)
-	if err != nil {
-		//return empyty player if error to bubble error up the call stack
-		panic(fmt.Errorf("creating texture from %v: %v", filename, err))
-	}
-	return tex
 }
 
 // apply collisions
