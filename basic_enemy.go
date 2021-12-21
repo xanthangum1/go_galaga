@@ -17,21 +17,20 @@ func newBasicEnemy(renderer *sdl.Renderer, position vector) *element {
 	// establishes roation
 	basicEnemy.rotation = 180
 
-	idleSequence, err := newSequence("sprites/basic_enemy/idle", 10, true, renderer)
+	idleSequence, err := newSequence("sprites/basic_enemy/idle", 5, true, renderer)
 	if err != nil {
-		panic(fmt.Errorf("creating idle sequence: %v %v", error))
+		panic(fmt.Errorf("creating idle sequence: %v", err))
 	}
-	destroySequence, err := newSequence("sprites/basic_enemy/destroy", 10, false, renderer)
+	destroySequence, err := newSequence("sprites/basic_enemy/destroy", 15, false, renderer)
 	if err != nil {
-		panic(fmt.Errorf("creating destroy sequence: %v %v", error))
+		panic(fmt.Errorf("creating destroy sequence: %v", err))
 	}
-
 	sequences := map[string]*sequence{
 		"idle":    idleSequence,
 		"destroy": destroySequence,
 	}
 
-	animator := newAnimator(basicEnemy)
+	animator := newAnimator(basicEnemy, sequences, "idle")
 	basicEnemy.addComponent(animator)
 
 	// render from bmp file

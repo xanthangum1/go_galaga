@@ -9,12 +9,12 @@ import (
 type spriteRenderer struct {
 	container *element
 	tex       *sdl.Texture
-	width     float64
-	height    float64
+	width     int
+	height    int
 }
 
 func newSpriteRenderer(container *element, renderer *sdl.Renderer, filename string) *spriteRenderer {
-	sr := spriteRenderer{}
+	sr := &spriteRenderer{}
 	var err error
 
 	sr.tex, err = loadTextureFromBMP(filename, renderer)
@@ -27,12 +27,16 @@ func newSpriteRenderer(container *element, renderer *sdl.Renderer, filename stri
 		panic(fmt.Errorf("querying texture: %v", err))
 	}
 
-	return &spriteRenderer{
-		container: container,
-		tex:       sr.tex,
-		width:     float64(width),
-		height:    float64(height),
-	}
+	sr.width = int(width)
+	sr.height = int(height)
+
+	sr.container = container
+
+	return sr
+}
+
+func (sr *spriteRenderer) start() {
+
 }
 
 func (sr *spriteRenderer) onUpdate() error {

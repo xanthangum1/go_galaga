@@ -14,14 +14,18 @@ type animator struct {
 	sequences       map[string]*sequence
 	current         string
 	lastFrameChange time.Time
+	finished        bool
 }
 
-func newAnimator(container *element, sequences map[string]*sequence, defaultSequence string) *animator {
+func newAnimator(
+	container *element,
+	sequences map[string]*sequence,
+	defaultSequence string) *animator {
 	var an animator
 
+	an.container = container
 	an.sequences = sequences
 	an.current = defaultSequence
-	an.container = container
 	an.lastFrameChange = time.Now()
 
 	return &an
@@ -29,14 +33,15 @@ func newAnimator(container *element, sequences map[string]*sequence, defaultSequ
 
 func (an *animator) onUpdate() error {
 	sequence := an.sequences[an.current]
+
 	frameInterval := float64(time.Second) / sequence.sampleRate
+
 	if time.Since(an.lastFrameChange) >= time.Duration(frameInterval) {
-		sequence.nextFrame()
+		an.finished = sequence.nextFrame()
 		an.lastFrameChange = time.Now()
 	}
 
 	return nil
-
 }
 
 func (an *animator) onDraw(renderer *sdl.Renderer) error {
@@ -46,30 +51,31 @@ func (an *animator) onDraw(renderer *sdl.Renderer) error {
 		tex,
 		an.container.position,
 		an.container.rotation,
-		renderer,
-	)
+		renderer)
 }
 
-func (an *animator) onDraw(renderer *sdl.Renderer) error {
-	tex := an.sequences[an.current].texture()
+func (an *animator) onCollision(other *element) error {
+	return nil
+}
 
-	return drawTexture(
-		tex,
-		an.container.position,
-		an.container.rotation,
-		renderer,
-	)
+func (an *animator) setSequence(name string) {
+	an.current = name
+	an.lastFrameChange = time.Now()
 }
 
 type sequence struct {
-	textures []*sdl.Texture
-	frame    int
-	// rate of frame change per second
+	textures   []*sdl.Texture
+	frame      int
 	sampleRate float64
 	loop       bool
 }
 
-func newSequence(filepath string, sampleRate float64, loop bool, renderer *sdl.Renderer) (*sequence, error) {
+func newSequence(
+	filepath string,
+	sampleRate float64,
+	loop bool,
+	renderer *sdl.Renderer) (*sequence, error) {
+
 	var seq sequence
 
 	files, err := ioutil.ReadDir(filepath)
@@ -79,6 +85,7 @@ func newSequence(filepath string, sampleRate float64, loop bool, renderer *sdl.R
 
 	for _, file := range files {
 		filename := path.Join(filepath, file.Name())
+
 		tex, err := loadTextureFromBMP(filename, renderer)
 		if err != nil {
 			return nil, fmt.Errorf("loading sequence frame: %v", err)
@@ -96,12 +103,16 @@ func (seq *sequence) texture() *sdl.Texture {
 	return seq.textures[seq.frame]
 }
 
-func (seq *sequence) nextFrame() {
+func (seq *sequence) nextFrame() bool {
 	if seq.frame == len(seq.textures)-1 {
 		if seq.loop {
 			seq.frame = 0
+		} else {
+			return true
 		}
 	} else {
 		seq.frame++
 	}
+
+	return false
 }
