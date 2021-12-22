@@ -17,16 +17,16 @@ func drawTexture(
 		return fmt.Errorf("querying texture: %v", err)
 	}
 	// convert coordinates to top left of sprite element
-	position.x -= float64(width) - 2.0
-	position.y -= float64(height) - 2.0
+	position.x -= float64(width) / 2.0
+	position.y -= float64(height) / 2.0
 
 	// render
 	return renderer.CopyEx(
 		tex,
-		&sdl.Rect{X: 0, Y: 0, W: int32(width), H: int32(height)},
-		&sdl.Rect{X: int32(position.x), Y: int32(position.y), W: int32(width), H: int32(height)},
+		&sdl.Rect{X: 0, Y: 0, W: width, H: height},
+		&sdl.Rect{X: int32(position.x), Y: int32(position.y), W: width, H: height},
 		rotation,
-		&sdl.Point{X: int32(width) / 2, Y: int32(height) / 2},
+		&sdl.Point{X: width / 2, Y: height / 2},
 		sdl.FLIP_NONE)
 }
 
